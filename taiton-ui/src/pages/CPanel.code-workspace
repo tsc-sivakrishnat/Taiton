@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../panel-backend-main"
+		},
+		{
+			"path": "../../../../panel-frontend-main"
+		}
+	],
+	"settings": {}
+}

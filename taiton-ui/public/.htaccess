@@ -1,0 +1,21 @@
+# -----------------------------------------------------------------------------
+# Hostinger (Apache): SPA fallback for React Router / Vite
+# This file is copied to `dist/` from `public/` when you run `npm run build`.
+# Upload the entire `dist/` contents to your site root (e.g. public_html).
+#
+# Without this, refreshing on /app/dashboard (or any client route) asks the
+# server for that path → 404. This rewrites unknown paths to index.html so
+# React Router can handle the URL.
+# -----------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # If the app lives in a subfolder (e.g. https://yoursite.com/cpanel/), set:
+  # RewriteBase /cpanel/
+
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>

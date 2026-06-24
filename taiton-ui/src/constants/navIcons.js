@@ -1,0 +1,21 @@
+/** Fallback if API unavailable — keep codes aligned with tb_cpanel_nav_icons */
+export const NAV_ICON_OPTIONS = [
+  { code: 'LayoutDashboard', label: 'Dashboard' },
+  { code: 'Bell', label: 'Notifications' },
+  { code: 'Users', label: 'Users' },
+  { code: 'Settings', label: 'Settings' },
+  { code: 'User', label: 'Profile' },
+  { code: 'Package', label: 'Products' },
+  { code: 'Search', label: 'SEO' },
+  { code: 'Layout', label: 'UI layout' },
+  { code: 'Inbox', label: 'Inbox' },
+  { code: 'Building2', label: 'Organization' },
+  { code: 'Shield', label: 'Roles' },
+  { code: 'Menu', label: 'Menu' },
+  { code: 'CheckCircle', label: 'Approvals' },
+  { code: 'GitBranch', label: 'Rules' },
+  { code: 'ScrollText', label: 'Audit' },
+  { code: 'UserPlus', label: 'Add user' },
+  { code: 'Briefcase', label: 'Careers' },
+  { code: 'Circle', label: 'Default' },
+];

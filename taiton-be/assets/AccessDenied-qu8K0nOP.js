@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BHwPObl3.js";var t=e();function n({title:e=`Access denied`,message:n}){return(0,t.jsxs)(`div`,{className:`cp-stack`,children:[(0,t.jsx)(`h1`,{className:`cp-page-title`,children:e}),(0,t.jsx)(`div`,{className:`cp-alert`,children:n??`You do not have permission to view this area for your current role.`})]})}export{n as t};

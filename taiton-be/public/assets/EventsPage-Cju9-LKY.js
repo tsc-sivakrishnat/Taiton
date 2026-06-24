@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-8j55GV6y.js";import{t}from"./AccessDenied-CZNP_MCZ.js";var n=e();function r(){return(0,n.jsx)(t,{title:`Still working on it`})}export{r as EventsPage};
