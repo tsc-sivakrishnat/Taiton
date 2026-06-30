@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-8j55GV6y.js";import{t}from"./PageBreadcrumb-Bpsk5U_j.js";import{AccountsPage as n}from"./AccountsPage-eKM44KU7.js";var r=e();function i(){return(0,r.jsxs)(`div`,{className:`cp-stack`,children:[(0,r.jsx)(t,{current:`Onboarding User to Roles`}),(0,r.jsx)(n,{embedded:!0})]})}export{i as UsersOnboardingPage};

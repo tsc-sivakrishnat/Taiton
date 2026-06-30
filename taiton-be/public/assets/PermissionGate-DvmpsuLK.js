@@ -1,0 +1,1 @@
+import{o as e}from"./index-QEv6PZc5.js";function t({permission:t,children:n,fallback:r=null}){let{can:i}=e();return!t||i(t)?n:r}export{t};
