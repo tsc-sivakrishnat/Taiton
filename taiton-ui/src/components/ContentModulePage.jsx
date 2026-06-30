@@ -8,6 +8,7 @@ import { canApprovePendingItem, contentTypeToResource } from '../utils/approvalA
 import { notify } from '../utils/notify.js';
 import { FieldLabel } from './FieldLabel.jsx';
 import { validateAll, v } from '../utils/validation.js';
+import { PageBreadcrumb } from './PageBreadcrumb.jsx';
 
 const TYPE_LABELS = {
   product: 'Products',
@@ -108,6 +109,7 @@ export function ContentModulePage({ contentType, title, subtitle }) {
 
   return (
     <div className="cp-stack">
+      <PageBreadcrumb current={pageTitle} />
       <div className="cp-page-head">
         <div>
           <h1 className="cp-page-title">{pageTitle}</h1>

@@ -153,6 +153,20 @@ body {
 .cp-nav--grow {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+}
+
+.cp-nav--grow::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cp-nav--grow::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.cp-nav--grow::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .cp-nav--bottom {
@@ -1526,6 +1540,17 @@ body {
   width: 100%;
   background: var(--cp-surface-elevated);
   color: var(--cp-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-field input:hover {
+  border-color: #94a3b8;
+}
+
+.cp-field input:focus {
+  border-color: var(--cp-primary, #3b82f6);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .cp-input {
@@ -1536,6 +1561,17 @@ body {
   background: var(--cp-surface-elevated);
   color: var(--cp-text);
   box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-input:hover {
+  border-color: #94a3b8;
+}
+
+.cp-input:focus {
+  border-color: var(--cp-primary, #3b82f6);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .cp-input--uppercase {
@@ -1573,6 +1609,19 @@ body {
   border: 1px solid var(--cp-border);
   width: 100%;
   background: var(--cp-surface-elevated);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-field textarea:hover,
+.cp-field select:hover {
+  border-color: #94a3b8;
+}
+
+.cp-field textarea:focus,
+.cp-field select:focus {
+  border-color: var(--cp-primary, #3b82f6);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .cp-field textarea {

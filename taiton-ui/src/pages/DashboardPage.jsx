@@ -7,6 +7,7 @@ import {
   useHostingMetrics,
 } from '../hooks/useEnterpriseQueries.js';
 import { PageSpinner } from '../components/PageSpinner.jsx';
+import { PageBreadcrumb } from '../components/PageBreadcrumb.jsx';
 
 function HostingMetricsBar({ data, loading, error }) {
   if (loading && !data) {
@@ -120,6 +121,7 @@ export function DashboardPage() {
 
   return (
     <div className="cp-stack">
+      <PageBreadcrumb current="Dashboard" />
       <div className="cp-page-head">
         <div>
           <h1 className="cp-page-title">Dashboard</h1>

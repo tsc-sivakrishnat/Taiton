@@ -59,6 +59,9 @@ export async function getPermissionGrant(roleCode, permissionCode, organizationI
       'content.seo.publish': 'seo',
       'content.ui.write': 'ui_elements',
       'content.ui.publish': 'ui_elements',
+      'content.blogs.read': 'blogs',
+      'content.blogs.write': 'blogs',
+      'content.blogs.publish': 'blogs',
     };
     const resName = PERMISSION_TO_RESOURCE[perm];
     if (resName) {
@@ -160,6 +163,7 @@ export async function listMyPermissions(roleCode, organizationId = null) {
       products: ['content.products.read', 'content.products.write', 'content.products.publish'],
       seo: ['content.seo.write', 'content.seo.publish'],
       ui_elements: ['content.ui.write', 'content.ui.publish'],
+      blogs: ['content.blogs.read', 'content.blogs.write', 'content.blogs.publish'],
     };
 
     const hasCodes = new Set(list.map((p) => p.code));

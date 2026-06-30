@@ -5,6 +5,7 @@ import { roleMatchesCsv } from '../utils/roleAccess.js';
 import { formatRoleName } from '../utils/displayLabels.js';
 import { enterpriseApi } from '../api/enterpriseApi.js';
 import { notify } from '../utils/notify.js';
+import { PageBreadcrumb } from '../components/PageBreadcrumb.jsx';
 
 const BRANDING_EDITORS = 'super_admin,sys_admin';
 
@@ -46,6 +47,7 @@ export function ProfilePage() {
 
   return (
     <div className="cp-stack">
+      <PageBreadcrumb current="Profile" />
       <h1 className="cp-page-title">Profile</h1>
       <p className="cp-page-lead">Your account and company appearance (where permitted).</p>
 

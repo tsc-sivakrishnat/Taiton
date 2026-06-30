@@ -15,6 +15,9 @@ export const PERMISSIONS = {
   SEO_PUBLISH: 'content.seo.publish',
   UI_WRITE: 'content.ui.write',
   UI_PUBLISH: 'content.ui.publish',
+  BLOGS_READ: 'content.blogs.read',
+  BLOGS_WRITE: 'content.blogs.write',
+  BLOGS_PUBLISH: 'content.blogs.publish',
   CUSTOMER_REQUESTS_READ: 'customer_requests.read',
   CUSTOMER_REQUESTS_MANAGE: 'customer_requests.manage',
 };
@@ -23,6 +26,12 @@ export const PLATFORM_ROLES = new Set(['sys_admin', 'super_admin']);
 
 export const CONTENT_TYPES = {
   product: { write: PERMISSIONS.PRODUCTS_WRITE, publish: PERMISSIONS.PRODUCTS_PUBLISH },
+  category: { write: PERMISSIONS.PRODUCTS_WRITE, publish: PERMISSIONS.PRODUCTS_PUBLISH },
+  subcategory: { write: PERMISSIONS.PRODUCTS_WRITE, publish: PERMISSIONS.PRODUCTS_PUBLISH },
+  variant: { write: PERMISSIONS.PRODUCTS_WRITE, publish: PERMISSIONS.PRODUCTS_PUBLISH },
   seo: { write: PERMISSIONS.SEO_WRITE, publish: PERMISSIONS.SEO_PUBLISH },
+  seo_page: { write: PERMISSIONS.SEO_WRITE, publish: PERMISSIONS.SEO_PUBLISH },
   ui_element: { write: PERMISSIONS.UI_WRITE, publish: PERMISSIONS.UI_PUBLISH },
+  blog: { write: PERMISSIONS.BLOGS_WRITE, publish: PERMISSIONS.BLOGS_PUBLISH },
+  career: { write: PERMISSIONS.UI_WRITE, publish: PERMISSIONS.UI_PUBLISH },
 };

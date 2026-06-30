@@ -1,6 +1,7 @@
 import { pool } from './config/db.js';
 
-const orgsToMigrate = [1, 25, 26];
+const [orgRows] = await pool.query('SELECT id FROM tb_cpanel_organizations');
+const orgsToMigrate = orgRows.map((r) => r.id);
 
 const defaultItems = [
   // Dashboard & Profile visible to all roles
@@ -23,11 +24,13 @@ const defaultItems = [
   // Super Employee / Employee routes
   ['Onboarding Products', 'Package', '/app/products', 'top', 10, 'super_employee,employee,employee_2'],
   ['SEO Management', 'Search', '/app/seo', 'top', 11, 'super_employee'],
-  ['UI Elements', 'Layout', '/app/ui-elements', 'top', 12, 'super_employee'],
-  ['Careers', 'Briefcase', '/app/careers', 'top', 13, 'super_employee'],
-  ['Catalogs', 'Layout', '/app/catalogs', 'top', 14, 'super_employee'],
-  ['Events & achievements', 'Briefcase', '/app/events', 'top', 15, 'super_employee'],
-  ['Web Responses', 'Inbox', '/app/web-responses', 'top', 16, 'org_admin,super_employee,employee,employee_2,member'],
+  ['Blog Management', 'ScrollText', '/app/blog', 'top', 12, 'org_admin,super_employee,employee,employee_2'],
+  ['UI Elements', 'Layout', '/app/ui-elements', 'top', 13, 'super_employee'],
+  ['Careers', 'Briefcase', '/app/careers', 'top', 14, 'super_employee'],
+  ['Job Applications', 'Users', '/app/careers?tab=tracking', 'top', 15, 'org_admin,super_employee'],
+  ['Catalogs', 'Layout', '/app/catalogs', 'top', 16, 'super_employee'],
+  ['Events & achievements', 'Briefcase', '/app/events', 'top', 17, 'super_employee'],
+  ['Web Responses', 'Inbox', '/app/web-responses', 'top', 18, 'org_admin,super_employee,employee,employee_2,member'],
 ];
 
 async function run() {

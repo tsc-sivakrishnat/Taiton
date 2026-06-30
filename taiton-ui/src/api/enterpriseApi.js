@@ -410,6 +410,9 @@ export const enterpriseApi = {
   contentCreate: (token, contentType, body) =>
     request(API_PATHS.content(contentType), { method: 'POST', token, body }),
 
+  contentUpdate: (token, contentType, id, body) =>
+    request(`${API_PATHS.content(contentType)}/${id}`, { method: 'PATCH', token, body }),
+
   contentApprove: (token, contentType, id, body) =>
     request(API_PATHS.contentApprove(contentType, id), { method: 'POST', token, body }),
 
@@ -421,4 +424,35 @@ export const enterpriseApi = {
 
   approveItem: (token, id, body) =>
     request(`/api/content/approve/${id}`, { method: 'POST', token, body }),
+
+  bulkUploadProducts: (token, excelFile, images) => {
+    const fd = new FormData();
+    fd.append('excelFile', excelFile);
+    images.forEach((img) => fd.append('images', img));
+    return requestFormData('/api/content/products/bulk-upload', { token, formData: fd, method: 'POST' });
+  },
+
+  bulkUploadSeo: (token, excelFile, images) => {
+    const fd = new FormData();
+    fd.append('excelFile', excelFile);
+    images.forEach((img) => fd.append('images', img));
+    return requestFormData('/api/content/seo/bulk-upload', { token, formData: fd, method: 'POST' });
+  },
+
+  bulkUploadBlogs: (token, excelFile, images) => {
+    const fd = new FormData();
+    fd.append('excelFile', excelFile);
+    images.forEach((img) => fd.append('images', img));
+    return requestFormData('/api/content/blogs/bulk-upload', { token, formData: fd, method: 'POST' });
+  },
+
+  uploadImage: (token, file) => {
+    const fd = new FormData();
+    fd.append('file', file);
+    return requestFormData('/api/content/upload-image', { token, formData: fd, method: 'POST' });
+  },
+
+  downloadProductsTemplateUrl: (token) => resolveApiUrl('/api/content/products/export-template') + (token ? `?token=${token}` : ''),
+  downloadSeoTemplateUrl: (token) => resolveApiUrl('/api/content/seo/export-template') + (token ? `?token=${token}` : ''),
+  downloadBlogsTemplateUrl: (token) => resolveApiUrl('/api/content/blogs/export-template') + (token ? `?token=${token}` : ''),
 };

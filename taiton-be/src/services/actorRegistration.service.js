@@ -439,11 +439,7 @@ export async function deleteActor({
     return { ok: true };
   }
 
-  if (callerRole === 'org_admin') {
-    const err = new Error('Organization admins are not allowed to delete users');
-    err.status = 403;
-    throw err;
-  }
+
   const id = Number(userId);
   if (!Number.isFinite(id)) {
     const err = new Error('Invalid user id');

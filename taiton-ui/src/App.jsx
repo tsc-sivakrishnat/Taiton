@@ -26,8 +26,29 @@ const CustomerRequestsPage = lazy(() =>
 const ProductsPage = lazy(() =>
   import('./pages/ProductsPage.jsx').then((m) => ({ default: m.ProductsPage })),
 );
+const CreateCategoryPage = lazy(() =>
+  import('./pages/products/CreateCategoryPage.jsx').then((m) => ({ default: m.CreateCategoryPage })),
+);
+const CreateSubCategoryPage = lazy(() =>
+  import('./pages/products/CreateSubCategoryPage.jsx').then((m) => ({ default: m.CreateSubCategoryPage })),
+);
+const CreateProductPage = lazy(() =>
+  import('./pages/products/CreateProductPage.jsx').then((m) => ({ default: m.CreateProductPage })),
+);
+const CreateVariantPage = lazy(() =>
+  import('./pages/products/CreateVariantPage.jsx').then((m) => ({ default: m.CreateVariantPage })),
+);
 const SeoPage = lazy(() =>
   import('./pages/SeoPage.jsx').then((m) => ({ default: m.SeoPage })),
+);
+const CreateSeoPage = lazy(() =>
+  import('./pages/seo/CreateSeoPage.jsx').then((m) => ({ default: m.CreateSeoPage })),
+);
+const BlogPage = lazy(() =>
+  import('./pages/BlogPage.jsx').then((m) => ({ default: m.BlogPage })),
+);
+const CreateBlogPage = lazy(() =>
+  import('./pages/blog/CreateBlogPage.jsx').then((m) => ({ default: m.CreateBlogPage })),
 );
 const UiElementsPage = lazy(() =>
   import('./pages/UiElementsPage.jsx').then((m) => ({ default: m.UiElementsPage })),
@@ -63,6 +84,9 @@ const WebResponsesPage = lazy(() =>
 );
 const CareersPage = lazy(() =>
   import('./pages/CareersPage.jsx').then((m) => ({ default: m.CareersPage })),
+);
+const CreateCareerPage = lazy(() =>
+  import('./pages/career/CreateCareerPage.jsx').then((m) => ({ default: m.CreateCareerPage })),
 );
 const CatalogsPage = lazy(() =>
   import('./pages/CatalogsPage.jsx').then((m) => ({ default: m.CatalogsPage })),
@@ -108,12 +132,20 @@ export default function App() {
             <Route path="org/approvals" element={<ApprovalsPage />} />
             <Route path="web-responses" element={<WebResponsesPage />} />
             <Route path="careers" element={<CareersPage />} />
+            <Route path="careers/create" element={<CreateCareerPage />} />
             <Route path="catalogs" element={<CatalogsPage />} />
             <Route path="events" element={<EventsPage />} />
             <Route path="accounts" element={<Navigate to="/app/org/users" replace />} />
             <Route path="customer-requests" element={<Navigate to="/app/web-responses" replace />} />
-            <Route path="products" element={<ProductsPage />} />
+             <Route path="products" element={<ProductsPage />} />
+            <Route path="products/create-category" element={<CreateCategoryPage />} />
+            <Route path="products/create-subcategory" element={<CreateSubCategoryPage />} />
+            <Route path="products/create-product" element={<CreateProductPage />} />
+            <Route path="products/create-variant" element={<CreateVariantPage />} />
             <Route path="seo" element={<SeoPage />} />
+            <Route path="seo/create" element={<CreateSeoPage />} />
+            <Route path="blog" element={<BlogPage />} />
+            <Route path="blog/create" element={<CreateBlogPage />} />
             <Route path="ui-elements" element={<UiElementsPage />} />
             <Route path="admin/actor-registration" element={<Navigate to="/app/accounts" replace />} />
             <Route path="*" element={<CustomNavPage />} />
