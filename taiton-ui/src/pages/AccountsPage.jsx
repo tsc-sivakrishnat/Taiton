@@ -463,7 +463,6 @@ export function AccountsPage({ embedded = false }) {
           <thead>
             <tr>
               <th>S.No</th>
-              <th>User ID</th>
               <th>Name</th>
               <th>Email</th>
               <th>Mobile</th>
@@ -475,13 +474,13 @@ export function AccountsPage({ embedded = false }) {
           <tbody>
             {listLoading ? (
               <tr>
-                <td colSpan={canRegister ? 8 : 7} className="cp-accounts-empty">
+                <td colSpan={canRegister ? 7 : 6} className="cp-accounts-empty">
                   Loading…
                 </td>
               </tr>
             ) : items.length === 0 ? (
               <tr>
-                <td colSpan={canRegister ? 8 : 7} className="cp-accounts-empty">
+                <td colSpan={canRegister ? 7 : 6} className="cp-accounts-empty">
                   No accounts match your search.
                 </td>
               </tr>
@@ -489,7 +488,6 @@ export function AccountsPage({ embedded = false }) {
               items.map((row, idx) => (
                 <tr key={row.id}>
                   <td>{(page - 1) * PAGE_SIZE + idx + 1}</td>
-                  <td>{row.id}</td>
                   <td className="cp-accounts-name">{row.fullName || '—'}</td>
                   <td>{row.email}</td>
                   <td>{row.mobile || '—'}</td>

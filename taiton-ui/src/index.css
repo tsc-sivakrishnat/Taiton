@@ -19,6 +19,9 @@ body {
 
 .cp-shell {
   --cp-sidebar-width: 260px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
   min-height: 100dvh;
   height: 100dvh;
   max-height: 100dvh;
@@ -27,14 +30,8 @@ body {
 }
 
 @media (min-width: 769px) {
-  .cp-shell {
-    display: block;
-  }
 
   .cp-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
     height: 100dvh;
     max-height: 100dvh;
     z-index: 20;
@@ -43,22 +40,17 @@ body {
   }
 
   .cp-main {
-    margin-left: var(--cp-sidebar-width);
-    width: calc(100% - var(--cp-sidebar-width));
+    flex: 1;
+    min-width: 0;
     min-height: 100dvh;
     max-height: 100dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: margin-left 200ms ease, width 200ms ease;
   }
 }
 
 @media (max-width: 768px) {
-  .cp-shell {
-    display: flex;
-    flex-direction: row;
-  }
 
   .cp-main {
     flex: 1;
@@ -153,6 +145,20 @@ body {
 .cp-nav--grow {
   flex: 1;
   min-height: 0;
+  overflow-y: auto;
+}
+
+.cp-nav--grow::-webkit-scrollbar {
+  width: 4px;
+}
+
+.cp-nav--grow::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.cp-nav--grow::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .cp-nav--bottom {
@@ -630,7 +636,7 @@ body {
 }
 
 .cp-stack {
-  max-width: var(--cp-max-width, 960px);
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -694,6 +700,32 @@ body {
 
 .cp-grid-2 {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.cp-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 768px) {
+  .cp-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cp-grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px) {
+  .cp-grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .cp-grid-4 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cp-field--full {
@@ -1526,6 +1558,17 @@ body {
   width: 100%;
   background: var(--cp-surface-elevated);
   color: var(--cp-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-field input:hover {
+  border-color: #94a3b8;
+}
+
+.cp-field input:focus {
+  border-color: var(--cp-primary, #3b82f6);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .cp-input {
@@ -1536,6 +1579,17 @@ body {
   background: var(--cp-surface-elevated);
   color: var(--cp-text);
   box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-input:hover {
+  border-color: #94a3b8;
+}
+
+.cp-input:focus {
+  border-color: var(--cp-primary, #3b82f6);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .cp-input--uppercase {
@@ -1573,6 +1627,19 @@ body {
   border: 1px solid var(--cp-border);
   width: 100%;
   background: var(--cp-surface-elevated);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cp-field textarea:hover,
+.cp-field select:hover {
+  border-color: #94a3b8;
+}
+
+.cp-field textarea:focus,
+.cp-field select:focus {
+  border-color: var(--cp-primary, #3b82f6);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .cp-field textarea {
@@ -2681,6 +2748,14 @@ body {
   align-items: center;
   gap: 8px;
   padding-top: 28px;
+}
+
+.cp-field--checkbox input[type="checkbox"] {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  margin: 0;
+  cursor: pointer;
 }
 
 @media (max-width: 520px) {

@@ -12,11 +12,18 @@ import { TableFilters } from '../components/TableFilters.jsx';
 import { TablePagination } from '../components/TablePagination.jsx';
 import { BulkUploadForm } from '../components/BulkUploadForm.jsx';
 
-export function SeoPage() {
+const resolveImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path;
+  const base = import.meta.env?.VITE_API_BASE || window.location.origin;
+  return new URL(path, base).toString();
+};
+
+export function BlogPage() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('list');
-  const [seoList, setSeoList] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -35,23 +42,25 @@ export function SeoPage() {
   const [uploadErrors, setUploadErrors] = useState([]);
   const [downloadUrl, setDownloadUrl] = useState('');
 
-  const loadSeo = useCallback(async () => {
+  // Load blogs list
+  const loadBlogs = useCallback(async () => {
     if (!token) return;
     setLoading(true);
     try {
-      const res = await enterpriseApi.contentList(token, 'seo_page');
-      setSeoList(res.items ?? []);
+      const res = await enterpriseApi.contentList(token, 'blog');
+      setBlogs(res.items ?? []);
     } catch (e) {
-      notify.apiError(e, 'Failed to load SEO pages');
+      notify.apiError(e, 'Failed to load blogs');
     } finally {
       setLoading(false);
     }
   }, [token]);
 
   useEffect(() => {
-    loadSeo();
-  }, [loadSeo]);
+    loadBlogs();
+  }, [loadBlogs]);
 
+  // Bulk upload handler
   const handleBulkUpload = async (e) => {
     e.preventDefault();
     if (!excelFile) {
@@ -63,13 +72,12 @@ export function SeoPage() {
     setUploadErrors([]);
     setDownloadUrl('');
     try {
-      const res = await enterpriseApi.bulkUploadSeo(token, excelFile, imagesList);
+      const res = await enterpriseApi.bulkUploadBlogs(token, excelFile, imagesList);
       if (res.stats) {
         setUploadStats(res.stats);
       }
       if (res.report) {
-        const errors = res.report.filter(r => r.status === 'failed');
-        setUploadErrors(errors);
+        setUploadErrors(res.report.filter(r => r.status === 'failed'));
       }
       if (res.downloadUrl) {
         setDownloadUrl(res.downloadUrl);
@@ -83,7 +91,7 @@ export function SeoPage() {
         setActiveTab('list');
       }
       emitUnreadRefresh();
-      await loadSeo();
+      await loadBlogs();
     } catch (err) {
       notify.apiError(err, 'Bulk upload failed');
     } finally {
@@ -108,15 +116,15 @@ export function SeoPage() {
   };
 
   return (
-    <PermissionRoute permission={PERMISSIONS.SEO_WRITE}>
+    <PermissionRoute permission={PERMISSIONS.BLOGS_READ}>
       <div className="cp-stack">
-        <PageBreadcrumb current="SEO" />
+        <PageBreadcrumb current="Blogs" />
         <div className="cp-page-head">
           <div>
-            <h1 className="cp-page-title">SEO Management</h1>
-            <p className="cp-muted">Configure SEO page targets, focus keywords, social share og graphics and canonicals.</p>
+            <h1 className="cp-page-title">Blog Management</h1>
+            <p className="cp-muted">Create, edit, approve and bulk upload articles and blog posts.</p>
           </div>
-          <button type="button" className="cp-btn cp-btn-secondary" onClick={loadSeo}>
+          <button type="button" className="cp-btn cp-btn-secondary" onClick={loadBlogs}>
             Refresh
           </button>
         </div>
@@ -128,7 +136,7 @@ export function SeoPage() {
             className={`cp-btn ${activeTab === 'list' ? 'cp-btn-primary' : 'cp-btn-secondary'}`}
             onClick={() => { setActiveTab('list'); setSearchQuery(''); setStatusFilter(''); }}
           >
-            SEO Pages Configurations
+            All Blog Posts
           </button>
           <button
             type="button"
@@ -139,18 +147,18 @@ export function SeoPage() {
           </button>
         </div>
 
-        {/* 1. SEO Configuration list */}
+        {/* 1. Blog Posts List */}
         {activeTab === 'list' && (
           <section className="cp-card cp-card-pad">
             <div className="cp-list-head" style={{ marginBottom: '16px' }}>
-              <h2 className="cp-section-title">Page Configurations</h2>
-              <PermissionGate permission={PERMISSIONS.SEO_WRITE}>
+              <h2 className="cp-section-title">All Blog Posts</h2>
+              <PermissionGate permission={PERMISSIONS.BLOGS_WRITE}>
                 <button
                   type="button"
                   className="cp-btn cp-btn-primary"
-                  onClick={() => navigate('/app/seo/create')}
+                  onClick={() => navigate('/app/blog/create')}
                 >
-                  Add Page SEO
+                  Add Blog Post
                 </button>
               </PermissionGate>
             </div>
@@ -160,23 +168,22 @@ export function SeoPage() {
               onSearchChange={setSearchQuery}
               statusVal={statusFilter}
               onStatusChange={setStatusFilter}
-              searchPlaceholder="Search by page name, slug or URL..."
+              searchPlaceholder="Search blogs by title or ID..."
               onReset={() => { setSearchQuery(''); setStatusFilter(''); }}
             />
 
             {loading ? (
-              <p className="cp-muted">Loading SEO pages…</p>
+              <p className="cp-muted">Loading blogs…</p>
             ) : (() => {
-              const filtered = seoList.filter((row) => {
-                const matchesSearch = (row.payload?.page_name || row.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                      (row.payload?.url_slug || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                      (row.payload?.page_url || '').toLowerCase().includes(searchQuery.toLowerCase());
+              const filtered = blogs.filter((row) => {
+                const matchesSearch = row.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      (row.payload?.blog_id || '').toLowerCase().includes(searchQuery.toLowerCase());
                 const matchesStatus = !statusFilter || row.status === statusFilter;
                 return matchesSearch && matchesStatus;
               });
 
               if (filtered.length === 0) {
-                return <p className="cp-muted">No SEO pages match your filters.</p>;
+                return <p className="cp-muted">No blog posts match your filters.</p>;
               }
 
               const sliced = filtered.slice((page - 1) * 10, page * 10);
@@ -187,11 +194,11 @@ export function SeoPage() {
                     <table className="cp-accounts-table">
                       <thead>
                         <tr>
-                          <th>Page Name</th>
-                          <th>URL / Route</th>
-                          <th>URL Slug</th>
-                          <th>Meta Title</th>
-                          <th>Focus Keyword</th>
+                          <th>Featured Image</th>
+                          <th>Blog ID</th>
+                          <th>Title</th>
+                          <th>Category</th>
+                          <th>Author</th>
                           <th>Status</th>
                           <th>Created Date</th>
                           <th aria-label="Actions">Actions</th>
@@ -200,28 +207,53 @@ export function SeoPage() {
                       <tbody>
                         {sliced.map((row) => (
                           <tr key={row.id}>
-                            <td><strong>{row.payload?.page_name || row.title}</strong></td>
-                            <td>{row.payload?.page_url || '—'}</td>
-                            <td>{row.payload?.url_slug || '—'}</td>
-                            <td>{row.summary || row.payload?.seo_meta_title || '—'}</td>
                             <td>
-                              {row.payload?.focus_keyword ? (
-                                <span className="cp-tag cp-tag-info" style={{ textTransform: 'none' }}>{row.payload.focus_keyword}</span>
+                              {row.payload?.featured_image ? (
+                                <img
+                                  src={resolveImageUrl(row.payload.featured_image)}
+                                  alt="Featured"
+                                  style={{ width: '80px', height: '50px', objectFit: 'cover', borderRadius: '4px' }}
+                                />
+                              ) : (
+                                <div style={{
+                                  width: '80px',
+                                  height: '50px',
+                                  background: 'var(--cp-surface)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: 'var(--cp-text-muted)',
+                                  fontSize: '11px',
+                                  borderRadius: '4px',
+                                  border: '1px solid var(--cp-border)'
+                                }}>
+                                  No Image
+                                </div>
+                              )}
+                            </td>
+                            <td>{row.payload?.blog_id || '—'}</td>
+                            <td><strong>{row.title}</strong></td>
+                            <td>
+                              {row.payload?.blog_category ? (
+                                <span className="cp-tag cp-tag-info" style={{ textTransform: 'none' }}>
+                                  {row.payload.blog_category}
+                                </span>
                               ) : (
                                 '—'
                               )}
                             </td>
+                            <td>{row.payload?.author_name || '—'}</td>
                             <td>{getStatusTag(row.status)}</td>
                             <td>{row.createdAt ? new Date(row.createdAt).toLocaleDateString() : '—'}</td>
                             <td>
                               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                                <PermissionGate permission={PERMISSIONS.SEO_WRITE}>
+                                <PermissionGate permission={PERMISSIONS.BLOGS_WRITE}>
                                   <button
                                     type="button"
                                     className="cp-btn-icon cp-btn-icon--primary"
-                                    onClick={() => navigate(`/app/seo/create?editId=${row.id}`)}
+                                    onClick={() => navigate(`/app/blog/create?editId=${row.id}`)}
                                     style={{ minWidth: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '6px', border: '1px solid var(--cp-border)' }}
-                                    title="Edit SEO Page"
+                                    title="Edit Blog"
                                   >
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
@@ -241,8 +273,8 @@ export function SeoPage() {
                     onChange={setPage}
                     total={filtered.length}
                     pageSize={10}
-                    labelSingle="SEO page configuration"
-                    labelPlural="SEO page configurations"
+                    labelSingle="blog post"
+                    labelPlural="blog posts"
                   />
                 </>
               );
@@ -250,14 +282,14 @@ export function SeoPage() {
           </section>
         )}
 
-        {/* 2. SEO Bulk Upload form */}
+        {/* 2. Blog Bulk Upload */}
         {activeTab === 'bulk' && (
-          <PermissionGate permission={PERMISSIONS.SEO_WRITE}>
+          <PermissionGate permission={PERMISSIONS.BLOGS_WRITE}>
             <BulkUploadForm
-              title="Bulk Import SEO Pages via Excel"
-              description="Import keywords and metadata configs for multiple pages simultaneously. Download the spreadsheet template, edit rows, and upload."
-              templateUrl={enterpriseApi.downloadSeoTemplateUrl(token)}
-              processButtonLabel="Process SEO Upload"
+              title="Bulk Import Blogs via Excel"
+              description="Download the structured template, specify Blog details, and upload both the Excel sheet and optional image files together."
+              templateUrl={enterpriseApi.downloadBlogsTemplateUrl(token)}
+              processButtonLabel="Start Import Processing"
               uploading={uploadingBulk}
               uploadStats={uploadStats}
               uploadErrors={uploadErrors}
@@ -268,7 +300,7 @@ export function SeoPage() {
                 setUploadErrors([]);
                 setDownloadUrl('');
                 try {
-                  const res = await enterpriseApi.bulkUploadSeo(token, file, images);
+                  const res = await enterpriseApi.bulkUploadBlogs(token, file, images);
                   if (res.stats) setUploadStats(res.stats);
                   if (res.report) setUploadErrors(res.report.filter(r => r.status === 'failed'));
                   if (res.downloadUrl) setDownloadUrl(res.downloadUrl);
@@ -279,7 +311,7 @@ export function SeoPage() {
                     setActiveTab('list');
                   }
                   emitUnreadRefresh();
-                  await loadSeo();
+                  await loadBlogs();
                 } catch (err) {
                   notify.apiError(err, 'Bulk upload failed');
                 } finally {
@@ -287,7 +319,7 @@ export function SeoPage() {
                 }
               }}
               onClearReport={clearUploadReport}
-              imageLabel="Choose Accompanying OG Images (Optional)"
+              imageLabel="Select Accompanying Image Files (Optional)"
             />
           </PermissionGate>
         )}

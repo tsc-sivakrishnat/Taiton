@@ -7,6 +7,13 @@ import { enterpriseApi } from '../api/enterpriseApi.js';
 import { canApprovePendingItem, contentTypeToResource } from '../utils/approvalAccess.js';
 import { notify } from '../utils/notify.js';
 
+const resolveImageUrl = (path) => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) return path;
+  const base = import.meta.env?.VITE_API_BASE || window.location.origin;
+  return new URL(path, base).toString();
+};
+
 export function NotificationsPage() {
   const { token, activeOrganization } = useAuth();
   const { items, loading, error, refresh, markRead, markAllRead } =
@@ -135,7 +142,31 @@ export function NotificationsPage() {
                       {!n.readAt && <span className="cp-notify-unread-dot" />}
                       {n.title}
                     </div>
-                    {n.body ? <div className="cp-muted cp-notify-body">{n.body}</div> : null}
+                     {n.body ? (
+                      <div className="cp-muted cp-notify-body">
+                        {n.body.startsWith('DOWNLOAD_EXCEL:') ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start', marginTop: '4px' }}>
+                            <span>{n.body.split('|')[1] || 'Excel upload details'}</span>
+                            <a
+                              href={resolveImageUrl(n.body.split('|')[0].replace('DOWNLOAD_EXCEL:', ''))}
+                              download
+                              className="cp-btn cp-btn-secondary"
+                              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none', padding: '6px 12px', fontSize: '12px', minHeight: 'auto' }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                              </svg>
+                              Download Uploaded Excel
+                            </a>
+                          </div>
+                        ) : (
+                          n.body
+                        )}
+                      </div>
+                    ) : null}
                     <div className="cp-muted cp-notify-meta">
                       {n.createdAt ? new Date(n.createdAt).toLocaleString() : ''}
                     </div>

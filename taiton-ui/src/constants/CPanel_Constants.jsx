@@ -26,7 +26,7 @@ export const constants = {
     mono: 'ui-monospace, "Cascadia Code", Consolas, monospace',
   },
   layout: {
-    maxContentWidth: '1200px',
+    maxContentWidth: '100%',
     sidebarWidth: '260px',
     headerHeight: '56px',
     radius: '10px',

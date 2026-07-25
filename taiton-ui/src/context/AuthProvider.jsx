@@ -55,6 +55,7 @@ export function AuthProvider({ children }) {
       return false;
     }
   });
+  const [bulkUploading, setBulkUploading] = useState(false);
   const skipSessionOnceRef = useRef(false);
 
   const setSidebarCollapsed = useCallback((collapsed) => {
@@ -249,6 +250,8 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(token && user && activeOrganization),
       sidebarCollapsed,
       setSidebarCollapsed,
+      bulkUploading,
+      setBulkUploading,
     }),
     [
       token,
@@ -266,6 +269,8 @@ export function AuthProvider({ children }) {
       loadPermissions,
       sidebarCollapsed,
       setSidebarCollapsed,
+      bulkUploading,
+      setBulkUploading,
     ],
   );
 

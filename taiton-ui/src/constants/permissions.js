@@ -15,6 +15,9 @@ export const PERMISSIONS = {
   SEO_PUBLISH: 'content.seo.publish',
   UI_WRITE: 'content.ui.write',
   UI_PUBLISH: 'content.ui.publish',
+  BLOGS_READ: 'content.blogs.read',
+  BLOGS_WRITE: 'content.blogs.write',
+  BLOGS_PUBLISH: 'content.blogs.publish',
   CUSTOMER_REQUESTS_READ: 'customer_requests.read',
   CUSTOMER_REQUESTS_MANAGE: 'customer_requests.manage',
 };
@@ -23,11 +26,16 @@ export const PERMISSIONS = {
 export function contentPermissionKeys(contentType) {
   switch (contentType) {
     case 'product':
+    case 'category':
+    case 'subcategory':
       return { write: PERMISSIONS.PRODUCTS_WRITE, publish: PERMISSIONS.PRODUCTS_PUBLISH };
     case 'seo':
+    case 'seo_page':
       return { write: PERMISSIONS.SEO_WRITE, publish: PERMISSIONS.SEO_PUBLISH };
     case 'ui_element':
       return { write: PERMISSIONS.UI_WRITE, publish: PERMISSIONS.UI_PUBLISH };
+    case 'blog':
+      return { write: PERMISSIONS.BLOGS_WRITE, publish: PERMISSIONS.BLOGS_PUBLISH };
     default:
       return { write: null, publish: null };
   }

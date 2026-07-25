@@ -42,11 +42,13 @@ const ROUTE_ACCESS = {
  */
 export function canAccessNavRoute(route, { roleCode, can, isPlatformAdmin, navItems }) {
   const path = normalizeRoute(route);
-  if (!path || !path.startsWith('/app/')) return false;
+  if (!path) return false;
 
   if (Array.isArray(navItems) && navItems.some((item) => normalizeRoute(item.route) === path)) {
     return true;
   }
+
+  if (!path.startsWith('/app/')) return false;
 
   const rule = ROUTE_ACCESS[path];
   if (!rule) {

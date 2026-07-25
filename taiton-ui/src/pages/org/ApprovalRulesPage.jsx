@@ -11,6 +11,7 @@ import { FieldLabel } from '../../components/FieldLabel.jsx';
 import { formatRoleName } from '../../utils/displayLabels.js';
 import { ConfirmDeleteCard } from '../../components/ConfirmDeleteCard.jsx';
 import { validateAll, v } from '../../utils/validation.js';
+import { SearchableSelect } from '../../components/SearchableSelect.jsx';
 
 const EMPTY_FORM = {
   id: null,
@@ -180,50 +181,33 @@ function ApprovalRulesPageInner() {
           <div className={editingId ? 'cp-grid cp-grid-2' : 'cp-grid-rules-inline'}>
             <label className="cp-field">
               <FieldLabel required>Content type</FieldLabel>
-              <select
-                className="cp-input"
+              <SearchableSelect
+                options={navItems.map((item) => ({ value: item.route, label: item.label }))}
                 value={form.resource}
-                onChange={(e) => setForm((f) => ({ ...f, resource: e.target.value }))}
+                onChange={(val) => setForm((f) => ({ ...f, resource: val }))}
+                placeholder="-- Search Content Type --"
                 disabled={!navItems.length}
-              >
-                {navItems.map((item) => (
-                  <option key={item.id} value={item.route}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
             <label className="cp-field">
               <FieldLabel required>Submitted by</FieldLabel>
-              <select
-                className="cp-input"
+              <SearchableSelect
+                options={roles.map((r) => ({ value: r.code, label: formatRoleName(r.code, r.name) }))}
                 value={form.makerRole}
-                onChange={(e) => setForm((f) => ({ ...f, makerRole: e.target.value }))}
+                onChange={(val) => setForm((f) => ({ ...f, makerRole: val }))}
+                placeholder="-- Search Submitter --"
                 disabled={!roles.length}
-              >
-                <option value="">Select…</option>
-                {roles.map((r) => (
-                  <option key={r.code} value={r.code}>
-                    {formatRoleName(r.code, r.name)}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
             <label className="cp-field">
               <FieldLabel required>Approved by</FieldLabel>
-              <select
-                className="cp-input"
+              <SearchableSelect
+                options={roles.map((r) => ({ value: r.code, label: formatRoleName(r.code, r.name) }))}
                 value={form.checkerRole}
-                onChange={(e) => setForm((f) => ({ ...f, checkerRole: e.target.value }))}
+                onChange={(val) => setForm((f) => ({ ...f, checkerRole: val }))}
+                placeholder="-- Search Approver --"
                 disabled={!roles.length}
-              >
-                <option value="">Select…</option>
-                {roles.map((r) => (
-                  <option key={r.code} value={r.code}>
-                    {formatRoleName(r.code, r.name)}
-                  </option>
-                ))}
-              </select>
+              />
             </label>
             {editingId ? (
               <label className="cp-field cp-field--checkbox">

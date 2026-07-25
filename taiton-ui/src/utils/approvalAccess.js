@@ -2,8 +2,13 @@
 export function contentTypeToResource(contentType) {
   const map = {
     product: 'products',
+    category: 'products',
+    subcategory: 'products',
+    variant: 'products',
     seo: 'seo',
     ui_element: 'ui_elements',
+    blog: 'blogs',
+    career: 'careers',
   };
   return map[String(contentType ?? '').trim()] ?? String(contentType ?? '').trim();
 }
@@ -15,9 +20,17 @@ export function canApprovePendingItem({ rules, resource, createdByRole, roleCode
   const res = String(resource ?? '').trim();
   if (!checker || !maker || !res) return false;
 
+  const RESOURCE_TO_ROUTES = {
+    'products': ['products', '/app/products'],
+    'seo': ['seo', '/app/seo'],
+    'ui_elements': ['ui_elements', '/app/ui-elements', '/app/ui-element'],
+    'blogs': ['blogs', '/app/blog', '/app/blogs'],
+  };
+  const allowed = RESOURCE_TO_ROUTES[res] || [res];
+
   const rule = (rules ?? []).find(
     (r) =>
-      r.resource === res &&
+      allowed.includes(r.resource) &&
       r.makerRole === maker &&
       r.isActive !== false &&
       r.isActive !== 0,

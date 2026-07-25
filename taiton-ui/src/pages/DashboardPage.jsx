@@ -7,6 +7,7 @@ import {
   useHostingMetrics,
 } from '../hooks/useEnterpriseQueries.js';
 import { PageSpinner } from '../components/PageSpinner.jsx';
+import { PageBreadcrumb } from '../components/PageBreadcrumb.jsx';
 
 function HostingMetricsBar({ data, loading, error }) {
   if (loading && !data) {
