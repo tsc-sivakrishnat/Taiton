@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BHwPObl3.js";import{c as t,i as n}from"./chunk-5KNZJZUH-HlFmnXrH.js";import{c as r,l as i,s as a}from"./index-BiRHVylt.js";var o=e();function s(){return r(i(t().pathname))?(0,o.jsx)(n,{to:`/app/dashboard`,replace:!0}):(0,o.jsx)(a,{})}export{s as CustomNavPage};

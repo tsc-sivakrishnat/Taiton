@@ -1,0 +1,1 @@
+function e(e,t){if(t==null||String(t).trim()===``)return!0;let n=String(e??``).trim();return String(t).split(/[,;]/).map(e=>e.trim()).filter(Boolean).includes(n)}export{e as t};

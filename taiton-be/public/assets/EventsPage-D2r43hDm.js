@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BHwPObl3.js";import{s as t}from"./index-Ciro3UqS.js";var n=e();function r(){return(0,n.jsx)(t,{title:`Still working on it`})}export{r as EventsPage};

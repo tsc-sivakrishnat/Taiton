@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BHwPObl3.js";var t=e();function n({children:e,required:n,htmlFor:r}){return(0,t.jsxs)(`span`,{className:`cp-field-label-text`,children:[r?(0,t.jsx)(`label`,{htmlFor:r,children:e}):e,n?(0,t.jsx)(`span`,{className:`cp-req`,"aria-hidden":`true`,children:` *`}):null]})}export{n as t};

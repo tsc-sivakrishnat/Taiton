@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BHwPObl3.js";var t=e();function n({message:e}){return e?(0,t.jsx)(`span`,{className:`cp-field-error`,role:`alert`,children:e}):null}export{n as t};
