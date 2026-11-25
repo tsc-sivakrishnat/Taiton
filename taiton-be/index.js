@@ -10,7 +10,7 @@ const cpanelRoutes = require('./src/main/routes/api.routes');
 dotenv.config();
 
 // 2. Load environment variables dynamically based on NODE_ENV (development vs production) with override
-const nodeEnv = process.env.NODE_ENV || 'development';
+const nodeEnv = process.env.NODE_ENV;
 const envFile = nodeEnv === 'production' ? '.env.production' : '.env.development';
 const envFilePath = path.join(__dirname, envFile);
 
@@ -19,7 +19,7 @@ if (fs.existsSync(envFilePath)) {
 }
 
 const app = express();
-const PORT = process.env.PORT || 8788;
+const PORT = process.env.PORT;
 
 // Middleware
 app.use(cors());
@@ -50,15 +50,15 @@ app.get('/health/db', async (req, res) => {
     return res.status(200).json({
       success: true,
       status: 'connected',
-      database: process.env.DB_NAME || 'u418448115_taiton_cpanel1',
-      host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || 3306,
+      database: process.env.DB_NAME,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
     });
   } else {
     return res.status(503).json({
       success: false,
       status: 'disconnected',
-      database: process.env.DB_NAME || 'u418448115_taiton_cpanel1',
+      database: process.env.DB_NAME,
       error: 'Could not establish connection to MySQL database server',
     });
   }

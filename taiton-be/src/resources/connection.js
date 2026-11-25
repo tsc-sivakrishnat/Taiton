@@ -4,11 +4,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3306,
-  user: process.env.DB_USER || 'u418448115_taiton_cpanel1',
-  password: process.env.DB_PASSWORD || 'TechtroleSoftwares123',
-  database: process.env.DB_NAME || 'u418448115_taiton_cpanel1',
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 25,
   queueLimit: 0,
@@ -21,13 +21,13 @@ pool.on('connection', (connection) => {
   connection.query("SET NAMES utf8mb4 COLLATE utf8mb4_general_ci", () => { });
 });
 
-const prodDbName = process.env.PROD_DB_NAME || 'u418448115_web_schema1';
+const prodDbName = process.env.PROD_DB_NAME;
 
 const prodPool = mysql.createPool({
-  host: process.env.PROD_DB_HOST || process.env.DB_HOST || 'localhost',
-  port: process.env.PROD_DB_PORT ? parseInt(process.env.PROD_DB_PORT, 10) : (process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3306),
-  user: process.env.PROD_DB_USER || 'u418448115_web_schema1',
-  password: process.env.PROD_DB_PASSWORD || 'TechtroleSoftwares123',
+  host: process.env.PROD_DB_HOST,
+  port: Number(process.env.PROD_DB_PORT),
+  user: process.env.PROD_DB_USER,
+  password: process.env.PROD_DB_PASSWORD,
   database: prodDbName,
   waitForConnections: true,
   connectionLimit: 25,
