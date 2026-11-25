@@ -8,8 +8,8 @@ const { logAudit } = require('../utils/auditLogger');
 const jwt = require('jsonwebtoken');
 
 function extractUserFromReq(req) {
-  if (req.user) return req.user;
-  const authHeader = req.headers.authorization;
+  if (req?.user) return req.user;
+  const authHeader = req?.headers?.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {
     const token = authHeader.split(' ')[1];
     try {
@@ -2307,7 +2307,7 @@ class ContentController {
         });
       }
 
-      const host = req.get('host') || 'localhost:8788';
+      const host = req.get('host') || process.env.APP_HOST || '';
       const protocol = req.headers['x-forwarded-proto'] || req.protocol || 'https';
       const fileUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
 
@@ -3850,6 +3850,42 @@ class ContentController {
     } catch (error) {
       console.error('[ContentController.deleteCommonsBrand] Error:', error);
       return res.status(500).json({ success: false, message: 'Failed to delete commons brand', error: error.message });
+    }
+  }
+
+  async getCareerDepartments(req, res) {
+    try {
+      const user = extractUserFromReq(req);
+      const orgCode = req.query?.org_code || user?.org_code || req.user?.org_code || 'taiton';
+      const [rows] = await pool.execute(
+        `SELECT DISTINCT department FROM tb_web_careers WHERE org_code = ? AND department IS NOT NULL AND TRIM(department) != '' ORDER BY department ASC`,
+        [orgCode]
+      );
+      const defaults = ['Sales', 'Engineering', 'Design', 'Operations', 'Marketing', 'HR'];
+      const dbDepts = rows.map((r) => r.department && r.department.trim()).filter(Boolean);
+      const list = Array.from(new Set([...defaults, ...dbDepts]));
+      return res.status(200).json({ success: true, departments: list, data: list });
+    } catch (error) {
+      console.error('[ContentController.getCareerDepartments] Error:', error);
+      return res.status(500).json({ success: false, message: 'Failed to fetch departments', error: error.message });
+    }
+  }
+
+  async getCatalogCategories(req, res) {
+    try {
+      const user = extractUserFromReq(req);
+      const orgCode = req.query?.org_code || user?.org_code || req.user?.org_code || 'taiton';
+      const [rows] = await pool.execute(
+        `SELECT DISTINCT category FROM tb_web_catalogs WHERE org_code = ? AND category IS NOT NULL AND TRIM(category) != '' ORDER BY category ASC`,
+        [orgCode]
+      );
+      const defaults = ['Catalogues', 'Brochures', 'Magazines', 'Social Media Creatives', 'Advertisement Posters', 'Technical Documents', 'Installation Guides'];
+      const dbCats = rows.map((r) => r.category && r.category.trim()).filter(Boolean);
+      const list = Array.from(new Set([...defaults, ...dbCats]));
+      return res.status(200).json({ success: true, categories: list, data: list });
+    } catch (error) {
+      console.error('[ContentController.getCatalogCategories] Error:', error);
+      return res.status(500).json({ success: false, message: 'Failed to fetch catalog categories', error: error.message });
     }
   }
 }

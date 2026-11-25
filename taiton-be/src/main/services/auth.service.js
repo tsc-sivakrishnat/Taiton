@@ -214,10 +214,7 @@ class AuthService {
       [cleanEmail, token, expiresAt]
     );
 
-    const defaultAppUrl = process.env.NODE_ENV === 'production'
-      ? 'https://lightblue-hornet-317974.hostingersite.com'
-      : 'http://localhost:5173';
-    const publicAppUrl = process.env.APP_PUBLIC_URL || defaultAppUrl;
+    const publicAppUrl = process.env.APP_PUBLIC_URL || '';
     const resetUrl = `${publicAppUrl.replace(/\/$/, '')}/reset-password?token=${token}`;
 
     const { sendPasswordResetEmail } = require('../utils/mailHelper');

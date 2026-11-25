@@ -67,6 +67,10 @@ router.post('/content/reorder', (req, res) => contentController.reorderContent(r
 router.put('/content/reorder', (req, res) => contentController.reorderContent(req, res));
 router.post('/content/:type/reorder', (req, res) => contentController.reorderContent(req, res));
 
+// Career Departments and Catalog Categories
+router.get('/content/careers/departments', (req, res) => contentController.getCareerDepartments(req, res));
+router.get('/content/catalogs/categories', (req, res) => contentController.getCatalogCategories(req, res));
+
 router.get('/content/:type', (req, res) => contentController.getContentByType(req, res));
 router.get('/content/:type/:id', (req, res) => contentController.getContentDetail(req, res));
 router.post('/content/:type', (req, res) => contentController.createContent(req, res));
